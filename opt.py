@@ -10,7 +10,7 @@ def S(n,k):
 	return np.array([np.roll(r,i) for i in range(n)])
 
 def mapp(n,k,phi,theta):
-	"""mapp(n,k,phi,theta)(lambda)  = min_{X \in C^n} det (tau_{n,k}(X@X.H) - lambda P(phi,theta) .* X@X.H)"""
+	"""mapp(n,k,phi,theta)(lambda)  = min_{X \in R^n} det (tau_{n,k}(X@X.H) - lambda P(phi,theta) .* X@X.H)"""
 	w = np.exp(1j*2*np.pi/3)
 	ker1 = np.array([w**i for i in range(n)])
 	ker2 = ker1 ** 2
@@ -18,7 +18,7 @@ def mapp(n,k,phi,theta):
 	ker2 /= n**.5
 	Phi = np.cos(theta/2) * ker1 + np.sin(theta/2)*np.exp(1j*phi) * ker2 # Phi from Bloch coordinates of Phi @ Phi.H
 	def wew1(l: 'optimisation parameter lamdba'):
-		def wew2(x: 'n-dim complex vector'):
+		def wew2(x: 'n-dim real vector'):
             # x - vector in the Hilbert space
 			y = np.linalg.det(np.diag(S(n,k) @ x**2) - x.reshape(n,1) @ x.reshape(n,1).T - l * (Phi*x).reshape(n,1) @ (Phi.conj()*x).reshape(n,1).T).real
 			return y
